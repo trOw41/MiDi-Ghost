@@ -1,6 +1,7 @@
 ﻿Imports NAudio.Midi
 Imports System.Text
 Imports System.Collections.Generic
+Imports Microsoft.VisualBasic.ApplicationServices
 
 Public Class Form1
 
@@ -12,9 +13,12 @@ Public Class Form1
     Private IsLearning As Boolean
     Private ControlToLearn As Object
     Private ExpectedMidiMessageType As String
+    Private MidiControlMappings As Object
+    Private learned As Boolean
     'Public MidiControlMappings As Object
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         PopulateMidiDevices()
         If cboMidiInDevices.Items.Count = 1 AndAlso cboMidiOutDevices.Items.Count = 1 Then
             cboMidiInDevices.SelectedIndex = 0
@@ -102,141 +106,165 @@ Public Class Form1
     End Sub
 
     Private Sub MidiIn_MessageReceived(sender As Object, e As MidiInMessageEventArgs)
-        ' Da das Event in einem anderen Thread ausgelöst wird,
-        ' müssen wir Invoke verwenden, um auf UI-Elemente zuzugreifen.
         Me.Invoke(Sub()
+                      ' SICHERSTELLEN, DASS DAS DICTIONARY INITIALISIERT IST
+                      If MidiControlMappings Is Nothing Then
+                          MidiControlMappings = New Dictionary(Of Integer, Control)()
+                          LogMessage("INFO: MidiControlMappings wurde initialisiert (war Nothing)." & Environment.NewLine)
+                      End If
+
                       Dim messageBuilder As New StringBuilder()
                       Dim rawMessage As Integer = e.RawMessage
 
-                      ' Parsen der MIDI-Nachricht und Log-Ausgabe
+                      ' --- LERNMODUS LOGIK ---
+                      If IsLearning AndAlso ControlToLearn IsNot Nothing Then
+                          Dim learned As Boolean = False
+                          Dim midiNumber As Integer = -1
+                          Dim midiType As String = ""
+
+                          If e.MidiEvent IsNot Nothing Then
+                              Select Case e.MidiEvent.CommandCode
+                                  Case MidiCommandCode.NoteOn
+                                      Dim noteOn As NoteOnEvent = CType(e.MidiEvent, NoteOnEvent)
+                                      If ExpectedMidiMessageType = "Note" OrElse ExpectedMidiMessageType = "" Then
+                                          midiNumber = noteOn.NoteNumber
+                                          midiType = "Note"
+                                          learned = True
+                                          LogMessage($"Gelernt: '{ControlToLearn.Name}' an MIDI Note {noteOn.NoteNumber} ({noteOn.NoteName}){Environment.NewLine}")
+                                      End If
+
+                                  Case MidiCommandCode.ControlChange
+                                      Dim controlChange As ControlChangeEvent = CType(e.MidiEvent, ControlChangeEvent)
+                                      If ExpectedMidiMessageType = "CC" OrElse ExpectedMidiMessageType = "" Then
+                                          midiNumber = controlChange.Controller
+                                          midiType = "CC"
+                                          learned = True
+                                          LogMessage($"Gelernt: '{ControlToLearn.Name}' an MIDI CC {controlChange.Controller} ({CType(controlChange.Controller, MidiController)}){Environment.NewLine}")
+                                      End If
+
+                                  Case MidiCommandCode.PitchWheelChange
+                                      Dim pitchWheel As PitchWheelChangeEvent = CType(e.MidiEvent, PitchWheelChangeEvent)
+                                      If ExpectedMidiMessageType = "PitchBend" OrElse ExpectedMidiMessageType = "" Then
+                                          midiNumber = -2 ' Platzhalter für Pitch Bend
+                                          midiType = "PitchBend"
+                                          learned = True
+                                          LogMessage($"Gelernt: '{ControlToLearn.Name}' an MIDI Pitch Bend{Environment.NewLine}")
+                                      End If
+                              End Select
+                          End If
+
+                          If learned Then
+                              ' HIER IST DIE KORREKTUR: Verwenden Sie ContainsKey()
+                              If MidiControlMappings.ContainsKey(midiNumber) Then
+                                  MidiControlMappings(midiNumber) = ControlToLearn
+                              Else
+                                  MidiControlMappings.Add(midiNumber, ControlToLearn)
+                              End If
+
+                              ' Update den gelernten Adressen-Log
+                              LearnMidiAddress($"{midiType}: {ControlToLearn.Name}", midiNumber, midiType)
+
+                              ' Lernmodus beenden
+                              IsLearning = False
+                              ControlToLearn = Nothing
+                              ExpectedMidiMessageType = ""
+                              Return ' Nachricht wurde für Lernzwecke verwendet, keine weitere Verarbeitung als Log
+                          Else
+                              If IsLearning Then
+                                  Dim controlName As String = If(ControlToLearn IsNot Nothing, ControlToLearn.Name, "unbekanntes Control")
+                                  LogMessage($"WARNUNG: '{controlName}' erwartet {ExpectedMidiMessageType}, aber {e.MidiEvent?.CommandCode} empfangen. Versuchen Sie es erneut.{Environment.NewLine}")
+                              End If
+                          End If
+                      End If
+                      ' --- ENDE LERNMODUS LOGIK ---
+
+
+                      ' --- NORMALE VERARBEITUNG DER MIDI-NACHRICHTEN ---
                       If e.MidiEvent IsNot Nothing Then
                           Select Case e.MidiEvent.CommandCode
                               Case MidiCommandCode.NoteOn
                                   Dim noteOn As NoteOnEvent = CType(e.MidiEvent, NoteOnEvent)
                                   messageBuilder.Append($"Note On - Kanal: {noteOn.Channel}, Note: {noteOn.NoteNumber} ({noteOn.NoteName}), Velocity: {noteOn.Velocity}")
-                                  ' Beispiel: MIDI Note-On an ein Control binden
-                                  If noteOn.Channel = MIDI_CHANNEL_TO_CONNECT AndAlso noteOn.NoteNumber Then ' Z.B. C4
-                                      '     ' Hier könnten Sie ein UI-Element (z.B. ein Label) aktualisieren
-
+                                  If MidiControlMappings.ContainsKey(noteOn.NoteNumber) Then
+                                      Dim targetControl As Control = MidiControlMappings(noteOn.NoteNumber)
+                                      If targetControl IsNot Nothing Then
+                                          If TypeOf targetControl Is Button Then
+                                              CType(targetControl, Button).PerformClick()
+                                              CType(targetControl, Button).BackColor = System.Drawing.Color.LightBlue
+                                          End If
+                                      End If
                                   End If
-                                  LearnMidiAddress($"Note {noteOn.NoteName} (Nr. {noteOn.NoteNumber})", noteOn.NoteNumber, "Note")
-
                               Case MidiCommandCode.NoteOff
                                   Dim noteOff As NoteEvent = CType(e.MidiEvent, NoteEvent)
                                   messageBuilder.Append($"Note Off - Kanal: {noteOff.Channel}, Note: {noteOff.NoteNumber} ({noteOff.NoteName}), Velocity: {noteOff.Velocity}")
-                                  LearnMidiAddress($"Note {noteOff.NoteName} (Nr. {noteOff.NoteNumber})", noteOff.NoteNumber, "Note")
-
+                                  If MidiControlMappings.ContainsKey(noteOff.NoteNumber) Then
+                                      Dim targetControl As Control = MidiControlMappings(noteOff.NoteNumber)
+                                      If targetControl IsNot Nothing Then
+                                          If TypeOf targetControl Is Button Then
+                                              CType(targetControl, Button).BackColor = System.Drawing.SystemColors.Control
+                                          End If
+                                      End If
+                                  End If
                               Case MidiCommandCode.ControlChange
                                   Dim controlChange As ControlChangeEvent = CType(e.MidiEvent, ControlChangeEvent)
                                   messageBuilder.Append(value:=$"Control Change - Kanal: {controlChange.Channel}, Controller: {controlChange.Controller} ({controlChange.Controller}), Wert: {controlChange.ControllerValue}")
-                                  ' Hier binden Sie den Control Change Wert an ein UI-Element
-                                  If controlChange.Channel = MIDI_CHANNEL_TO_CONNECT Then
-                                      Select Case CType(controlChange.Controller, MidiController)
-                                          Case MidiController.MainVolume ' Beispiel: MIDI CC 7
-                                              ' LogMessage($"Lautstärke (CC7): {controlChange.ControllerValue}{Environment.NewLine}")
-                                              ' Hier könnten Sie einen Slider aktualisieren:
-                                              ' Me.hsbVolume.Value = controlChange.ControllerValue
-                                          Case MidiController.Pan
-                                              ' LogMessage($"Panorama (CC10): {controlChange.ControllerValue}{Environment.NewLine}")
-                                          Case Else
-                                              ' Andere Controller
-                                      End Select
-                                      LearnMidiAddress(description:=$"CC {controlChange.Controller} ({controlChange.Controller})", controlChange.Controller, "CC")
+
+                                  If MidiControlMappings.ContainsKey(controlChange.Controller) Then
+                                      Dim targetControl As Control = MidiControlMappings(controlChange.Controller)
+                                      If targetControl IsNot Nothing Then
+                                          If TypeOf targetControl Is NAudio.Gui.Fader Then
+                                              Dim scaledValue As Integer = CInt((controlChange.ControllerValue) / 127.0)
+                                              CType(targetControl, NAudio.Gui.Fader).Value = scaledValue
+                                          ElseIf TypeOf targetControl Is NAudio.Gui.Pot Then
+
+                                              ' MessageBox.Show("scalesValue: " & scaledValue)
+                                              Label10.Text = ((controlChange.ControllerValue) / 127).ToString()
+                                              CType(targetControl, NAudio.Gui.Pot).Value = CInt((controlChange.ControllerValue) / 127)
+                                              CType(targetControl, NAudio.Gui.Pot).Capture = True
+                                          ElseIf TypeOf targetControl Is Label Then
+                                              CType(targetControl, Label).Text = controlChange.ControllerValue.ToString()
+                                          End If
+                                      Else
+                                          LogMessage($"WARNUNG: Zugeordnetes Control für CC {controlChange.Controller} ist Nothing. Zuordnung wird entfernt.{Environment.NewLine}")
+                                          MidiControlMappings.Remove(controlChange.Controller)
+                                          UpdateLearnedAddressesList()
+                                      End If
                                   End If
 
                               Case MidiCommandCode.PitchWheelChange
                                   Dim pitchWheel As PitchWheelChangeEvent = CType(e.MidiEvent, PitchWheelChangeEvent)
                                   messageBuilder.Append($"Pitch Bend - Kanal: {pitchWheel.Channel}, Wert: {pitchWheel.Pitch}")
-                                  LearnMidiAddress("Pitch Bend", -1, "PitchBend") ' Pitch Bend hat keine feste Controller-Nummer
+                                  If MidiControlMappings.ContainsKey(-2) Then
+                                      Dim targetControl As Control = MidiControlMappings(-2)
+                                      If targetControl IsNot Nothing Then
+                                          If TypeOf targetControl Is NAudio.Gui.Fader Then
+                                              Dim scaledValue As Integer = CInt((pitchWheel.Pitch + 8192) / 16383.0 * 127.0)
+                                              CType(targetControl, NAudio.Gui.Fader).Value = scaledValue
+                                          End If
+                                      End If
+                                  End If
 
-                              Case MidiCommandCode.PatchChange
-                                  Dim programChange As PatchChangeEvent = CType(e.MidiEvent, PatchChangeEvent)
-                                  messageBuilder.Append($"Program Change - Kanal: {programChange.Channel}, Programm: {programChange.Patch}")
-                                  LearnMidiAddress($"Program Change {programChange.Patch}", programChange.Patch, "ProgramChange")
+                              Case MidiCommandCode.PatchChange, MidiCommandCode.ChannelAfterTouch, MidiCommandCode.KeyAfterTouch
+                    ' ... Verarbeitungslogik ...
 
-                              Case MidiCommandCode.ChannelAfterTouch
-                                  Dim channelAftertouch As ChannelAfterTouchEvent = CType(e.MidiEvent, ChannelAfterTouchEvent)
-                                  messageBuilder.Append($"Channel Aftertouch - Kanal: {channelAftertouch.Channel}, Wert: {channelAftertouch.AfterTouchPressure}")
-                                  LearnMidiAddress("Channel Aftertouch", -1, "ChannelAftertouch")
-
-                              Case MidiCommandCode.KeyAfterTouch
-                                  Dim keyAftertouch As NoteOnEvent = CType(e.MidiEvent, MidiEvent)
-                                  messageBuilder.Append($"Key Aftertouch - Kanal: {keyAftertouch.Channel}, Note: {keyAftertouch.NoteNumber}, Wert: {keyAftertouch}")
-                                  LearnMidiAddress($"Key Aftertouch {keyAftertouch.NoteNumber}", keyAftertouch.NoteNumber, "KeyAftertouch")
-
-                              Case MidiCommandCode.TimingClock
-                                  messageBuilder.Append("Timing Clock")
-                              Case MidiCommandCode.StartSequence
-                                  messageBuilder.Append("Start")
-                              Case MidiCommandCode.StopSequence
-                                  messageBuilder.Append("Stop")
-                              Case MidiCommandCode.ContinueSequence
-                                  messageBuilder.Append("Continue")
-                              Case MidiCommandCode.AutoSensing
-                                  ' Ignoriere Active Sensing, da es sehr häufig ist und das Log überfluten kann
-                                  Return
-                              Case MidiCommandCode.Eox
-                                  messageBuilder.Append("Reset")
-                              Case MidiCommandCode.Sysex
-                                  Dim sysEx As SysexEvent = CType(e.MidiEvent, SysexEvent)
-                                  messageBuilder.Append($"SysEx Nachricht - Länge: {sysEx.AbsoluteTime} Bytes")
-                                  ' Hier können Sie die SysEx-Daten analysieren, um spezifische Controller-Informationen erhalten.
-                                  ' Dies ist hochgradig gerätespezifisch und erfordert das Handbuch des Controllers.
-                                  ' Example: SysEx message starting with F0 7E 7F 06 01 (Universal Device Inquiry)
-
+                              Case MidiCommandCode.TimingClock, MidiCommandCode.StartSequence, MidiCommandCode.StopSequence, MidiCommandCode.ContinueSequence, MidiCommandCode.AutoSensing, MidiCommandCode.Sysex
+                                  If e.MidiEvent.CommandCode = MidiCommandCode.AutoSensing OrElse e.MidiEvent.CommandCode = MidiCommandCode.TimingClock Then Return
+                                  If e.MidiEvent.CommandCode = MidiCommandCode.Sysex Then
+                                      Dim sysEx As SysexEvent = CType(e.MidiEvent, SysexEvent)
+                                      messageBuilder.Append($"SysEx Nachricht - Länge: {sysEx.CommandCode} Bytes")
+                                  Else
+                                      messageBuilder.Append($"{e.MidiEvent.CommandCode} Event")
+                                  End If
 
                               Case Else
                                   messageBuilder.Append($"Unbekanntes MIDI Event: {e.MidiEvent.CommandCode}, Roh: 0x{rawMessage:X}")
                           End Select
                       Else
-                          ' Wenn NAudio die Nachricht nicht parsen kann, zeige die Rohdaten an.
                           messageBuilder.Append($"Rohdaten empfangen: 0x{rawMessage:X}")
                       End If
+
                       LogMessage($"[{e.Timestamp}] {messageBuilder}{Environment.NewLine}")
-
                   End Sub)
-
-        ' Wenn wir im Lernmodus sind, prüfen wir, ob die empfangene Nachricht dem erwarteten Typ entspricht 
-
-        If IsLearning AndAlso ControlToLearn IsNot Nothing Then
-            Dim learned As Boolean = False
-            Dim midiNumber As Integer = -1
-            Dim midiType As String = ""
-            Dim midiEvent As MidiEvent = e.MidiEvent
-            If e.MidiEvent IsNot Nothing Then
-                Select Case e.MidiEvent.CommandCode
-                    Case MidiCommandCode.NoteOn
-                        Dim noteOn As NoteOnEvent = CType(e.MidiEvent, NoteOnEvent)
-                        If ExpectedMidiMessageType = "Note" OrElse ExpectedMidiMessageType = "" Then
-                            midiNumber = noteOn.NoteNumber
-                            midiType = "Note"
-                            learned = True
-                            LogMessage($"Gelernt: '{ControlToLearn.Name}' an MIDI Note {noteOn.NoteNumber} ({noteOn.NoteName}){Environment.NewLine}")
-                        End If
-
-                    Case MidiCommandCode.ControlChange
-                        Dim controlChange As ControlChangeEvent = CType(e.MidiEvent, ControlChangeEvent)
-                        If ExpectedMidiMessageType = "CC" OrElse ExpectedMidiMessageType = "" Then
-                            midiNumber = controlChange.Controller
-                            midiType = "CC"
-                            learned = True
-                            LogMessage($"Gelernt: '{ControlToLearn.Name}' an MIDI CC {controlChange.Controller} ({controlChange.Controller}){Environment.NewLine}")
-                        End If
-
-                    Case MidiCommandCode.PitchWheelChange
-                        Dim pitchWheel As PitchWheelChangeEvent = CType(e.MidiEvent, PitchWheelChangeEvent)
-                        If ExpectedMidiMessageType = "PitchBend" OrElse ExpectedMidiMessageType = "" Then
-                            ' Pitch Bend hat keine einzelne "Nummer", könnte einen Platzhalter verwenden oder spezielle Handhabung
-                            midiNumber = -2 ' Platzhalter für Pitch Bend
-                            midiType = "PitchBend"
-                            learned = True
-                            LogMessage($"Gelernt: '{ControlToLearn.Name}' an MIDI Pitch Bend{Environment.NewLine}")
-                        End If
-
-                        ' Fügen Sie hier weitere Typen hinzu, wenn Sie andere MIDI-Nachrichten lernen möchten
-                End Select
-            End If
-        End If
     End Sub
 
     Private Sub MidiIn_ErrorReceived(sender As Object, e As MidiInMessageEventArgs)
@@ -328,6 +356,12 @@ Public Class Form1
             lbxMidiAddresses.Columns.Add("MIDI_OUT", "MIDI Number")
             lbxMidiAddresses.Columns("MiDi_IN").Width = 200 ' Oder AutoSizeColumnsMode
             lbxMidiAddresses.Columns("MIDI_OUT").Width = 100
+        End If
+    End Sub
+
+    Private Sub Pot6_ValueChanged(sender As Object, e As EventArgs) Handles Pot6.ValueChanged
+        If True Then
+            Label9.Text = Pot6.Value
         End If
     End Sub
 

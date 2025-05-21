@@ -25,6 +25,9 @@ Partial Class Form1
         components = New ComponentModel.Container()
         Panel1 = New Panel()
         VolumeMeter2 = New NAudio.Gui.VolumeMeter()
+        Fader1 = New NAudio.Gui.Fader()
+        cmsMidiLearn = New ContextMenuStrip(components)
+        tsmiLearnMidi = New ToolStripMenuItem()
         VolumeMeter8 = New NAudio.Gui.VolumeMeter()
         VolumeMeter7 = New NAudio.Gui.VolumeMeter()
         VolumeMeter6 = New NAudio.Gui.VolumeMeter()
@@ -41,8 +44,6 @@ Partial Class Form1
         Label2 = New Label()
         Label1 = New Label()
         Button3 = New Button()
-        cmsMidiLearn = New ContextMenuStrip(components)
-        tsmiLearnMidi = New ToolStripMenuItem()
         Fader8 = New NAudio.Gui.Fader()
         Button8 = New Button()
         Fader7 = New NAudio.Gui.Fader()
@@ -65,7 +66,6 @@ Partial Class Form1
         Fader3 = New NAudio.Gui.Fader()
         Button6 = New Button()
         Fader2 = New NAudio.Gui.Fader()
-        Fader1 = New NAudio.Gui.Fader()
         Panel2 = New Panel()
         Pot6 = New NAudio.Gui.Pot()
         Pot5 = New NAudio.Gui.Pot()
@@ -81,6 +81,13 @@ Partial Class Form1
         Label12 = New Label()
         Label25 = New Label()
         Label11 = New Label()
+        Label36 = New Label()
+        Label35 = New Label()
+        Label34 = New Label()
+        Label33 = New Label()
+        Label32 = New Label()
+        Label31 = New Label()
+        Label30 = New Label()
         Label10 = New Label()
         Label9 = New Label()
         Pot1 = New NAudio.Gui.Pot()
@@ -98,6 +105,7 @@ Partial Class Form1
         MIDI_OUT = New DataGridViewTextBoxColumn()
         BindingSource1 = New BindingSource(components)
         rtbMidiLog = New RichTextBox()
+        Panel3 = New Panel()
         Panel1.SuspendLayout()
         cmsMidiLearn.SuspendLayout()
         Panel2.SuspendLayout()
@@ -110,6 +118,7 @@ Partial Class Form1
         Panel1.BackColor = Color.Transparent
         Panel1.BorderStyle = BorderStyle.FixedSingle
         Panel1.Controls.Add(VolumeMeter2)
+        Panel1.Controls.Add(Fader1)
         Panel1.Controls.Add(VolumeMeter8)
         Panel1.Controls.Add(VolumeMeter7)
         Panel1.Controls.Add(VolumeMeter6)
@@ -148,16 +157,15 @@ Partial Class Form1
         Panel1.Controls.Add(Fader3)
         Panel1.Controls.Add(Button6)
         Panel1.Controls.Add(Fader2)
-        Panel1.Controls.Add(Fader1)
-        Panel1.Location = New Point(37, 317)
+        Panel1.Location = New Point(12, 317)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(823, 225)
+        Panel1.Size = New Size(840, 225)
         Panel1.TabIndex = 0
         ' 
         ' VolumeMeter2
         ' 
         VolumeMeter2.Amplitude = 0F
-        VolumeMeter2.Location = New Point(768, 35)
+        VolumeMeter2.Location = New Point(803, 35)
         VolumeMeter2.MaxDb = 18.0F
         VolumeMeter2.MinDb = -60.0F
         VolumeMeter2.Name = "VolumeMeter2"
@@ -165,187 +173,20 @@ Partial Class Form1
         VolumeMeter2.TabIndex = 2
         VolumeMeter2.Text = "VolumeMeter1"
         ' 
-        ' VolumeMeter8
+        ' Fader1
         ' 
-        VolumeMeter8.Amplitude = 0F
-        VolumeMeter8.Location = New Point(47, 35)
-        VolumeMeter8.MaxDb = 18.0F
-        VolumeMeter8.MinDb = -60.0F
-        VolumeMeter8.Name = "VolumeMeter8"
-        VolumeMeter8.Size = New Size(22, 171)
-        VolumeMeter8.TabIndex = 2
-        VolumeMeter8.Text = "VolumeMeter1"
-        ' 
-        ' VolumeMeter7
-        ' 
-        VolumeMeter7.Amplitude = 0F
-        VolumeMeter7.Location = New Point(154, 35)
-        VolumeMeter7.MaxDb = 18.0F
-        VolumeMeter7.MinDb = -60.0F
-        VolumeMeter7.Name = "VolumeMeter7"
-        VolumeMeter7.Size = New Size(22, 171)
-        VolumeMeter7.TabIndex = 2
-        VolumeMeter7.Text = "VolumeMeter1"
-        ' 
-        ' VolumeMeter6
-        ' 
-        VolumeMeter6.Amplitude = 0F
-        VolumeMeter6.Location = New Point(257, 35)
-        VolumeMeter6.MaxDb = 18.0F
-        VolumeMeter6.MinDb = -60.0F
-        VolumeMeter6.Name = "VolumeMeter6"
-        VolumeMeter6.Size = New Size(22, 171)
-        VolumeMeter6.TabIndex = 2
-        VolumeMeter6.Text = "VolumeMeter1"
-        ' 
-        ' VolumeMeter5
-        ' 
-        VolumeMeter5.Amplitude = 0F
-        VolumeMeter5.Location = New Point(360, 35)
-        VolumeMeter5.MaxDb = 18.0F
-        VolumeMeter5.MinDb = -60.0F
-        VolumeMeter5.Name = "VolumeMeter5"
-        VolumeMeter5.Size = New Size(22, 171)
-        VolumeMeter5.TabIndex = 2
-        VolumeMeter5.Text = "VolumeMeter1"
-        ' 
-        ' VolumeMeter4
-        ' 
-        VolumeMeter4.Amplitude = 0F
-        VolumeMeter4.Location = New Point(463, 35)
-        VolumeMeter4.MaxDb = 18.0F
-        VolumeMeter4.MinDb = -60.0F
-        VolumeMeter4.Name = "VolumeMeter4"
-        VolumeMeter4.Size = New Size(22, 171)
-        VolumeMeter4.TabIndex = 2
-        VolumeMeter4.Text = "VolumeMeter1"
-        ' 
-        ' VolumeMeter3
-        ' 
-        VolumeMeter3.Amplitude = 0F
-        VolumeMeter3.Location = New Point(566, 35)
-        VolumeMeter3.MaxDb = 18.0F
-        VolumeMeter3.MinDb = -60.0F
-        VolumeMeter3.Name = "VolumeMeter3"
-        VolumeMeter3.Size = New Size(22, 171)
-        VolumeMeter3.TabIndex = 2
-        VolumeMeter3.Text = "VolumeMeter1"
-        ' 
-        ' VolumeMeter1
-        ' 
-        VolumeMeter1.Amplitude = 0F
-        VolumeMeter1.Location = New Point(668, 35)
-        VolumeMeter1.MaxDb = 18.0F
-        VolumeMeter1.MinDb = -60.0F
-        VolumeMeter1.Name = "VolumeMeter1"
-        VolumeMeter1.Size = New Size(22, 171)
-        VolumeMeter1.TabIndex = 2
-        VolumeMeter1.Text = "VolumeMeter1"
-        ' 
-        ' Label7
-        ' 
-        Label7.AutoSize = True
-        Label7.FlatStyle = FlatStyle.Flat
-        Label7.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label7.ForeColor = SystemColors.Info
-        Label7.Location = New Point(519, 209)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(38, 14)
-        Label7.TabIndex = 1
-        Label7.Text = "Label1"
-        ' 
-        ' Label8
-        ' 
-        Label8.AutoSize = True
-        Label8.FlatStyle = FlatStyle.Flat
-        Label8.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label8.ForeColor = SystemColors.Info
-        Label8.Location = New Point(721, 209)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(38, 14)
-        Label8.TabIndex = 1
-        Label8.Text = "Label1"
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.FlatStyle = FlatStyle.Flat
-        Label6.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label6.ForeColor = SystemColors.Info
-        Label6.Location = New Point(621, 209)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(38, 14)
-        Label6.TabIndex = 1
-        Label6.Text = "Label1"
-        ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        Label5.FlatStyle = FlatStyle.Flat
-        Label5.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label5.ForeColor = SystemColors.Info
-        Label5.Location = New Point(416, 209)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(38, 14)
-        Label5.TabIndex = 1
-        Label5.Text = "Label1"
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.FlatStyle = FlatStyle.Flat
-        Label4.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label4.ForeColor = SystemColors.Info
-        Label4.Location = New Point(313, 209)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(38, 14)
-        Label4.TabIndex = 1
-        Label4.Text = "Label1"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.FlatStyle = FlatStyle.Flat
-        Label3.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label3.ForeColor = SystemColors.Info
-        Label3.Location = New Point(210, 209)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(38, 14)
-        Label3.TabIndex = 1
-        Label3.Text = "Label1"
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.FlatStyle = FlatStyle.Flat
-        Label2.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label2.ForeColor = SystemColors.Info
-        Label2.Location = New Point(107, 209)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(38, 14)
-        Label2.TabIndex = 1
-        Label2.Text = "Label1"
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.FlatStyle = FlatStyle.Flat
-        Label1.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
-        Label1.ForeColor = SystemColors.Info
-        Label1.Location = New Point(3, 209)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(38, 14)
-        Label1.TabIndex = 1
-        Label1.Text = "Label1"
-        ' 
-        ' Button3
-        ' 
-        Button3.ContextMenuStrip = cmsMidiLearn
-        Button3.Location = New Point(416, 0)
-        Button3.Name = "Button3"
-        Button3.Size = New Size(41, 19)
-        Button3.TabIndex = 0
-        Button3.UseVisualStyleBackColor = True
+        Fader1.BackColor = SystemColors.ControlLight
+        Fader1.ContextMenuStrip = cmsMidiLearn
+        Fader1.ForeColor = Color.OrangeRed
+        Fader1.Location = New Point(13, 35)
+        Fader1.Maximum = 0
+        Fader1.Minimum = 0
+        Fader1.Name = "Fader1"
+        Fader1.Orientation = Orientation.Horizontal
+        Fader1.Size = New Size(41, 171)
+        Fader1.TabIndex = 0
+        Fader1.Text = "Fader1"
+        Fader1.Value = 0
         ' 
         ' cmsMidiLearn
         ' 
@@ -359,11 +200,194 @@ Partial Class Form1
         tsmiLearnMidi.Size = New Size(134, 22)
         tsmiLearnMidi.Text = "Learn MIDI "
         ' 
+        ' VolumeMeter8
+        ' 
+        VolumeMeter8.Amplitude = 0F
+        VolumeMeter8.ForeColor = Color.OrangeRed
+        VolumeMeter8.Location = New Point(60, 35)
+        VolumeMeter8.MaxDb = 18.0F
+        VolumeMeter8.MinDb = -60.0F
+        VolumeMeter8.Name = "VolumeMeter8"
+        VolumeMeter8.Size = New Size(22, 171)
+        VolumeMeter8.TabIndex = 2
+        VolumeMeter8.Text = "VolumeMeter1"
+        ' 
+        ' VolumeMeter7
+        ' 
+        VolumeMeter7.Amplitude = 0F
+        VolumeMeter7.Location = New Point(168, 35)
+        VolumeMeter7.MaxDb = 18.0F
+        VolumeMeter7.MinDb = -60.0F
+        VolumeMeter7.Name = "VolumeMeter7"
+        VolumeMeter7.Size = New Size(22, 171)
+        VolumeMeter7.TabIndex = 2
+        VolumeMeter7.Text = "VolumeMeter1"
+        ' 
+        ' VolumeMeter6
+        ' 
+        VolumeMeter6.Amplitude = 0F
+        VolumeMeter6.Location = New Point(275, 35)
+        VolumeMeter6.MaxDb = 18.0F
+        VolumeMeter6.MinDb = -60.0F
+        VolumeMeter6.Name = "VolumeMeter6"
+        VolumeMeter6.Size = New Size(22, 171)
+        VolumeMeter6.TabIndex = 2
+        VolumeMeter6.Text = "VolumeMeter1"
+        ' 
+        ' VolumeMeter5
+        ' 
+        VolumeMeter5.Amplitude = 0F
+        VolumeMeter5.Location = New Point(381, 35)
+        VolumeMeter5.MaxDb = 18.0F
+        VolumeMeter5.MinDb = -60.0F
+        VolumeMeter5.Name = "VolumeMeter5"
+        VolumeMeter5.Size = New Size(22, 171)
+        VolumeMeter5.TabIndex = 2
+        VolumeMeter5.Text = "VolumeMeter1"
+        ' 
+        ' VolumeMeter4
+        ' 
+        VolumeMeter4.Amplitude = 0F
+        VolumeMeter4.Location = New Point(489, 35)
+        VolumeMeter4.MaxDb = 18.0F
+        VolumeMeter4.MinDb = -60.0F
+        VolumeMeter4.Name = "VolumeMeter4"
+        VolumeMeter4.Size = New Size(22, 171)
+        VolumeMeter4.TabIndex = 2
+        VolumeMeter4.Text = "VolumeMeter1"
+        ' 
+        ' VolumeMeter3
+        ' 
+        VolumeMeter3.Amplitude = 0F
+        VolumeMeter3.Location = New Point(596, 35)
+        VolumeMeter3.MaxDb = 18.0F
+        VolumeMeter3.MinDb = -60.0F
+        VolumeMeter3.Name = "VolumeMeter3"
+        VolumeMeter3.Size = New Size(22, 171)
+        VolumeMeter3.TabIndex = 2
+        VolumeMeter3.Text = "VolumeMeter1"
+        ' 
+        ' VolumeMeter1
+        ' 
+        VolumeMeter1.Amplitude = 0F
+        VolumeMeter1.Location = New Point(698, 35)
+        VolumeMeter1.MaxDb = 18.0F
+        VolumeMeter1.MinDb = -60.0F
+        VolumeMeter1.Name = "VolumeMeter1"
+        VolumeMeter1.Size = New Size(22, 171)
+        VolumeMeter1.TabIndex = 2
+        VolumeMeter1.Text = "VolumeMeter1"
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.FlatStyle = FlatStyle.Flat
+        Label7.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label7.ForeColor = SystemColors.Info
+        Label7.Location = New Point(549, 209)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(38, 14)
+        Label7.TabIndex = 1
+        Label7.Text = "Label1"
+        ' 
+        ' Label8
+        ' 
+        Label8.AutoSize = True
+        Label8.FlatStyle = FlatStyle.Flat
+        Label8.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label8.ForeColor = SystemColors.Info
+        Label8.Location = New Point(756, 209)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(38, 14)
+        Label8.TabIndex = 1
+        Label8.Text = "Label1"
+        ' 
+        ' Label6
+        ' 
+        Label6.AutoSize = True
+        Label6.FlatStyle = FlatStyle.Flat
+        Label6.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label6.ForeColor = SystemColors.Info
+        Label6.Location = New Point(651, 209)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(38, 14)
+        Label6.TabIndex = 1
+        Label6.Text = "Label1"
+        ' 
+        ' Label5
+        ' 
+        Label5.AutoSize = True
+        Label5.FlatStyle = FlatStyle.Flat
+        Label5.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label5.ForeColor = SystemColors.Info
+        Label5.Location = New Point(442, 209)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(38, 14)
+        Label5.TabIndex = 1
+        Label5.Text = "Label1"
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.FlatStyle = FlatStyle.Flat
+        Label4.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label4.ForeColor = SystemColors.Info
+        Label4.Location = New Point(334, 209)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(38, 14)
+        Label4.TabIndex = 1
+        Label4.Text = "Label1"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.FlatStyle = FlatStyle.Flat
+        Label3.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label3.ForeColor = SystemColors.Info
+        Label3.Location = New Point(228, 209)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(38, 14)
+        Label3.TabIndex = 1
+        Label3.Text = "Label1"
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.FlatStyle = FlatStyle.Flat
+        Label2.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label2.ForeColor = SystemColors.Info
+        Label2.Location = New Point(121, 209)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(38, 14)
+        Label2.TabIndex = 1
+        Label2.Text = "Label1"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.FlatStyle = FlatStyle.Flat
+        Label1.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label1.ForeColor = SystemColors.Info
+        Label1.Location = New Point(16, 209)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(38, 14)
+        Label1.TabIndex = 1
+        Label1.Text = "Label1"
+        ' 
+        ' Button3
+        ' 
+        Button3.ContextMenuStrip = cmsMidiLearn
+        Button3.Location = New Point(442, 0)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(41, 19)
+        Button3.TabIndex = 0
+        Button3.UseVisualStyleBackColor = True
+        ' 
         ' Fader8
         ' 
         Fader8.BackColor = SystemColors.ControlLight
         Fader8.ForeColor = SystemColors.Control
-        Fader8.Location = New Point(721, 35)
+        Fader8.Location = New Point(756, 35)
         Fader8.Maximum = 0
         Fader8.Minimum = 0
         Fader8.Name = "Fader8"
@@ -376,7 +400,7 @@ Partial Class Form1
         ' Button8
         ' 
         Button8.ContextMenuStrip = cmsMidiLearn
-        Button8.Location = New Point(721, 0)
+        Button8.Location = New Point(756, 0)
         Button8.Name = "Button8"
         Button8.Size = New Size(41, 19)
         Button8.TabIndex = 0
@@ -387,7 +411,7 @@ Partial Class Form1
         Fader7.BackColor = SystemColors.ControlLight
         Fader7.ContextMenuStrip = cmsMidiLearn
         Fader7.ForeColor = SystemColors.Control
-        Fader7.Location = New Point(621, 35)
+        Fader7.Location = New Point(651, 35)
         Fader7.Maximum = 0
         Fader7.Minimum = 0
         Fader7.Name = "Fader7"
@@ -400,7 +424,7 @@ Partial Class Form1
         ' Button5
         ' 
         Button5.ContextMenuStrip = cmsMidiLearn
-        Button5.Location = New Point(107, 0)
+        Button5.Location = New Point(121, 0)
         Button5.Name = "Button5"
         Button5.Size = New Size(41, 19)
         Button5.TabIndex = 0
@@ -409,7 +433,7 @@ Partial Class Form1
         ' Button2
         ' 
         Button2.ContextMenuStrip = cmsMidiLearn
-        Button2.Location = New Point(313, 0)
+        Button2.Location = New Point(334, 0)
         Button2.Name = "Button2"
         Button2.Size = New Size(41, 19)
         Button2.TabIndex = 0
@@ -421,7 +445,7 @@ Partial Class Form1
         Label24.FlatStyle = FlatStyle.Flat
         Label24.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label24.ForeColor = Color.Cornsilk
-        Label24.Location = New Point(727, 18)
+        Label24.Location = New Point(762, 18)
         Label24.Name = "Label24"
         Label24.Size = New Size(31, 14)
         Label24.TabIndex = 1
@@ -434,7 +458,7 @@ Partial Class Form1
         Label23.FlatStyle = FlatStyle.Flat
         Label23.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label23.ForeColor = Color.Cornsilk
-        Label23.Location = New Point(625, 18)
+        Label23.Location = New Point(655, 18)
         Label23.Name = "Label23"
         Label23.Size = New Size(31, 14)
         Label23.TabIndex = 1
@@ -447,7 +471,7 @@ Partial Class Form1
         Label22.FlatStyle = FlatStyle.Flat
         Label22.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label22.ForeColor = Color.Cornsilk
-        Label22.Location = New Point(523, 18)
+        Label22.Location = New Point(553, 18)
         Label22.Name = "Label22"
         Label22.Size = New Size(31, 14)
         Label22.TabIndex = 1
@@ -460,7 +484,7 @@ Partial Class Form1
         Label21.FlatStyle = FlatStyle.Flat
         Label21.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label21.ForeColor = Color.Cornsilk
-        Label21.Location = New Point(420, 18)
+        Label21.Location = New Point(446, 18)
         Label21.Name = "Label21"
         Label21.Size = New Size(31, 14)
         Label21.TabIndex = 1
@@ -473,7 +497,7 @@ Partial Class Form1
         Label20.FlatStyle = FlatStyle.Flat
         Label20.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label20.ForeColor = Color.Cornsilk
-        Label20.Location = New Point(316, 18)
+        Label20.Location = New Point(337, 18)
         Label20.Name = "Label20"
         Label20.Size = New Size(31, 14)
         Label20.TabIndex = 1
@@ -486,7 +510,7 @@ Partial Class Form1
         Label19.FlatStyle = FlatStyle.Flat
         Label19.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label19.ForeColor = Color.Cornsilk
-        Label19.Location = New Point(213, 18)
+        Label19.Location = New Point(231, 18)
         Label19.Name = "Label19"
         Label19.Size = New Size(31, 14)
         Label19.TabIndex = 1
@@ -499,7 +523,7 @@ Partial Class Form1
         Label18.FlatStyle = FlatStyle.Flat
         Label18.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label18.ForeColor = Color.Cornsilk
-        Label18.Location = New Point(110, 18)
+        Label18.Location = New Point(124, 18)
         Label18.Name = "Label18"
         Label18.Size = New Size(31, 14)
         Label18.TabIndex = 1
@@ -512,7 +536,7 @@ Partial Class Form1
         Label17.FlatStyle = FlatStyle.Flat
         Label17.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F, FontStyle.Italic)
         Label17.ForeColor = Color.Cornsilk
-        Label17.Location = New Point(3, 18)
+        Label17.Location = New Point(16, 18)
         Label17.Name = "Label17"
         Label17.Size = New Size(31, 14)
         Label17.TabIndex = 1
@@ -524,7 +548,7 @@ Partial Class Form1
         Fader6.BackColor = SystemColors.ControlLight
         Fader6.ContextMenuStrip = cmsMidiLearn
         Fader6.ForeColor = SystemColors.Control
-        Fader6.Location = New Point(519, 35)
+        Fader6.Location = New Point(549, 35)
         Fader6.Maximum = 0
         Fader6.Minimum = 0
         Fader6.Name = "Fader6"
@@ -537,7 +561,7 @@ Partial Class Form1
         ' Button7
         ' 
         Button7.ContextMenuStrip = cmsMidiLearn
-        Button7.Location = New Point(621, 0)
+        Button7.Location = New Point(651, 0)
         Button7.Name = "Button7"
         Button7.Size = New Size(41, 19)
         Button7.TabIndex = 0
@@ -548,7 +572,7 @@ Partial Class Form1
         Fader5.BackColor = SystemColors.ControlLight
         Fader5.ContextMenuStrip = cmsMidiLearn
         Fader5.ForeColor = SystemColors.Control
-        Fader5.Location = New Point(416, 35)
+        Fader5.Location = New Point(442, 35)
         Fader5.Maximum = 0
         Fader5.Minimum = 0
         Fader5.Name = "Fader5"
@@ -561,7 +585,7 @@ Partial Class Form1
         ' Button4
         ' 
         Button4.ContextMenuStrip = cmsMidiLearn
-        Button4.Location = New Point(0, 0)
+        Button4.Location = New Point(13, 0)
         Button4.Name = "Button4"
         Button4.Size = New Size(41, 19)
         Button4.TabIndex = 0
@@ -572,7 +596,7 @@ Partial Class Form1
         Fader4.BackColor = SystemColors.ControlLight
         Fader4.ContextMenuStrip = cmsMidiLearn
         Fader4.ForeColor = SystemColors.Control
-        Fader4.Location = New Point(313, 35)
+        Fader4.Location = New Point(334, 35)
         Fader4.Maximum = 0
         Fader4.Minimum = 0
         Fader4.Name = "Fader4"
@@ -585,7 +609,7 @@ Partial Class Form1
         ' Button1
         ' 
         Button1.ContextMenuStrip = cmsMidiLearn
-        Button1.Location = New Point(210, 0)
+        Button1.Location = New Point(228, 0)
         Button1.Name = "Button1"
         Button1.Size = New Size(41, 19)
         Button1.TabIndex = 0
@@ -596,7 +620,7 @@ Partial Class Form1
         Fader3.BackColor = SystemColors.ControlLight
         Fader3.ContextMenuStrip = cmsMidiLearn
         Fader3.ForeColor = SystemColors.Control
-        Fader3.Location = New Point(210, 35)
+        Fader3.Location = New Point(228, 35)
         Fader3.Maximum = 0
         Fader3.Minimum = 0
         Fader3.Name = "Fader3"
@@ -609,7 +633,7 @@ Partial Class Form1
         ' Button6
         ' 
         Button6.ContextMenuStrip = cmsMidiLearn
-        Button6.Location = New Point(519, 0)
+        Button6.Location = New Point(549, 0)
         Button6.Name = "Button6"
         Button6.Size = New Size(41, 19)
         Button6.TabIndex = 0
@@ -620,7 +644,7 @@ Partial Class Form1
         Fader2.BackColor = SystemColors.ControlLight
         Fader2.ContextMenuStrip = cmsMidiLearn
         Fader2.ForeColor = SystemColors.Control
-        Fader2.Location = New Point(107, 35)
+        Fader2.Location = New Point(121, 35)
         Fader2.Maximum = 0
         Fader2.Minimum = 0
         Fader2.Name = "Fader2"
@@ -629,21 +653,6 @@ Partial Class Form1
         Fader2.TabIndex = 0
         Fader2.Text = "Fader1"
         Fader2.Value = 0
-        ' 
-        ' Fader1
-        ' 
-        Fader1.BackColor = SystemColors.ControlLight
-        Fader1.ContextMenuStrip = cmsMidiLearn
-        Fader1.ForeColor = SystemColors.Control
-        Fader1.Location = New Point(0, 35)
-        Fader1.Maximum = 0
-        Fader1.Minimum = 0
-        Fader1.Name = "Fader1"
-        Fader1.Orientation = Orientation.Horizontal
-        Fader1.Size = New Size(41, 171)
-        Fader1.TabIndex = 0
-        Fader1.Text = "Fader1"
-        Fader1.Value = 0
         ' 
         ' Panel2
         ' 
@@ -663,30 +672,37 @@ Partial Class Form1
         Panel2.Controls.Add(Label12)
         Panel2.Controls.Add(Label25)
         Panel2.Controls.Add(Label11)
+        Panel2.Controls.Add(Label36)
+        Panel2.Controls.Add(Label35)
+        Panel2.Controls.Add(Label34)
+        Panel2.Controls.Add(Label33)
+        Panel2.Controls.Add(Label32)
+        Panel2.Controls.Add(Label31)
+        Panel2.Controls.Add(Label30)
         Panel2.Controls.Add(Label10)
         Panel2.Controls.Add(Label9)
         Panel2.Controls.Add(Pot1)
-        Panel2.Location = New Point(4, 229)
+        Panel2.Location = New Point(12, 197)
         Panel2.Name = "Panel2"
-        Panel2.Size = New Size(856, 82)
+        Panel2.Size = New Size(840, 115)
         Panel2.TabIndex = 1
         ' 
         ' Pot6
         ' 
         Pot6.ContextMenuStrip = cmsMidiLearn
-        Pot6.Location = New Point(33, 23)
+        Pot6.Location = New Point(13, 23)
         Pot6.Margin = New Padding(4, 3, 4, 3)
         Pot6.Maximum = 1.0R
         Pot6.Minimum = 0R
         Pot6.Name = "Pot6"
-        Pot6.Size = New Size(37, 37)
+        Pot6.Size = New Size(69, 72)
         Pot6.TabIndex = 2
-        Pot6.Value = 0.5R
+        Pot6.Value = 1.0R
         ' 
         ' Pot5
         ' 
         Pot5.ContextMenuStrip = cmsMidiLearn
-        Pot5.Location = New Point(140, 23)
+        Pot5.Location = New Point(121, 23)
         Pot5.Margin = New Padding(4, 3, 4, 3)
         Pot5.Maximum = 1.0R
         Pot5.Minimum = 0R
@@ -698,7 +714,7 @@ Partial Class Form1
         ' Pot4
         ' 
         Pot4.ContextMenuStrip = cmsMidiLearn
-        Pot4.Location = New Point(240, 23)
+        Pot4.Location = New Point(228, 23)
         Pot4.Margin = New Padding(4, 3, 4, 3)
         Pot4.Maximum = 1.0R
         Pot4.Minimum = 0R
@@ -710,7 +726,7 @@ Partial Class Form1
         ' Pot3
         ' 
         Pot3.ContextMenuStrip = cmsMidiLearn
-        Pot3.Location = New Point(343, 23)
+        Pot3.Location = New Point(334, 23)
         Pot3.Margin = New Padding(4, 3, 4, 3)
         Pot3.Maximum = 1.0R
         Pot3.Minimum = 0R
@@ -722,7 +738,7 @@ Partial Class Form1
         ' Pot2
         ' 
         Pot2.ContextMenuStrip = cmsMidiLearn
-        Pot2.Location = New Point(446, 23)
+        Pot2.Location = New Point(442, 23)
         Pot2.Margin = New Padding(4, 3, 4, 3)
         Pot2.Maximum = 1.0R
         Pot2.Minimum = 0R
@@ -734,7 +750,7 @@ Partial Class Form1
         ' Pot8
         ' 
         Pot8.ContextMenuStrip = cmsMidiLearn
-        Pot8.Location = New Point(754, 23)
+        Pot8.Location = New Point(762, 23)
         Pot8.Margin = New Padding(4, 3, 4, 3)
         Pot8.Maximum = 1.0R
         Pot8.Minimum = 0R
@@ -746,7 +762,7 @@ Partial Class Form1
         ' Pot7
         ' 
         Pot7.ContextMenuStrip = cmsMidiLearn
-        Pot7.Location = New Point(651, 23)
+        Pot7.Location = New Point(657, 23)
         Pot7.Margin = New Padding(4, 3, 4, 3)
         Pot7.Maximum = 1.0R
         Pot7.Minimum = 0R
@@ -761,7 +777,7 @@ Partial Class Form1
         Label16.FlatStyle = FlatStyle.Flat
         Label16.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label16.ForeColor = SystemColors.ActiveCaptionText
-        Label16.Location = New Point(754, 63)
+        Label16.Location = New Point(755, 98)
         Label16.Name = "Label16"
         Label16.Size = New Size(38, 14)
         Label16.TabIndex = 1
@@ -774,7 +790,7 @@ Partial Class Form1
         Label15.FlatStyle = FlatStyle.Flat
         Label15.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label15.ForeColor = SystemColors.ActiveCaptionText
-        Label15.Location = New Point(651, 63)
+        Label15.Location = New Point(651, 98)
         Label15.Name = "Label15"
         Label15.Size = New Size(38, 14)
         Label15.TabIndex = 1
@@ -787,7 +803,7 @@ Partial Class Form1
         Label14.FlatStyle = FlatStyle.Flat
         Label14.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label14.ForeColor = SystemColors.ActiveCaptionText
-        Label14.Location = New Point(549, 63)
+        Label14.Location = New Point(549, 99)
         Label14.Name = "Label14"
         Label14.Size = New Size(38, 14)
         Label14.TabIndex = 1
@@ -800,7 +816,7 @@ Partial Class Form1
         Label13.FlatStyle = FlatStyle.Flat
         Label13.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label13.ForeColor = SystemColors.ActiveCaptionText
-        Label13.Location = New Point(446, 63)
+        Label13.Location = New Point(442, 98)
         Label13.Name = "Label13"
         Label13.Size = New Size(38, 14)
         Label13.TabIndex = 1
@@ -813,7 +829,7 @@ Partial Class Form1
         Label12.FlatStyle = FlatStyle.Flat
         Label12.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label12.ForeColor = SystemColors.ActiveCaptionText
-        Label12.Location = New Point(343, 63)
+        Label12.Location = New Point(334, 98)
         Label12.Name = "Label12"
         Label12.Size = New Size(38, 14)
         Label12.TabIndex = 1
@@ -826,7 +842,7 @@ Partial Class Form1
         Label25.FlatStyle = FlatStyle.Flat
         Label25.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label25.ForeColor = SystemColors.ActiveCaptionText
-        Label25.Location = New Point(139, 63)
+        Label25.Location = New Point(121, 98)
         Label25.Name = "Label25"
         Label25.Size = New Size(38, 14)
         Label25.TabIndex = 1
@@ -839,12 +855,103 @@ Partial Class Form1
         Label11.FlatStyle = FlatStyle.Flat
         Label11.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label11.ForeColor = SystemColors.ActiveCaptionText
-        Label11.Location = New Point(239, 63)
+        Label11.Location = New Point(228, 98)
         Label11.Name = "Label11"
         Label11.Size = New Size(38, 14)
         Label11.TabIndex = 1
         Label11.Text = "Label1"
         Label11.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label36
+        ' 
+        Label36.AutoSize = True
+        Label36.FlatStyle = FlatStyle.Flat
+        Label36.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label36.ForeColor = SystemColors.ActiveCaptionText
+        Label36.Location = New Point(762, -1)
+        Label36.Name = "Label36"
+        Label36.Size = New Size(38, 14)
+        Label36.TabIndex = 1
+        Label36.Text = "Label1"
+        Label36.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label35
+        ' 
+        Label35.AutoSize = True
+        Label35.FlatStyle = FlatStyle.Flat
+        Label35.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label35.ForeColor = SystemColors.ActiveCaptionText
+        Label35.Location = New Point(657, -1)
+        Label35.Name = "Label35"
+        Label35.Size = New Size(38, 14)
+        Label35.TabIndex = 1
+        Label35.Text = "Label1"
+        Label35.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label34
+        ' 
+        Label34.AutoSize = True
+        Label34.FlatStyle = FlatStyle.Flat
+        Label34.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label34.ForeColor = SystemColors.ActiveCaptionText
+        Label34.Location = New Point(549, -1)
+        Label34.Name = "Label34"
+        Label34.Size = New Size(38, 14)
+        Label34.TabIndex = 1
+        Label34.Text = "Label1"
+        Label34.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label33
+        ' 
+        Label33.AutoSize = True
+        Label33.FlatStyle = FlatStyle.Flat
+        Label33.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label33.ForeColor = SystemColors.ActiveCaptionText
+        Label33.Location = New Point(441, -1)
+        Label33.Name = "Label33"
+        Label33.Size = New Size(38, 14)
+        Label33.TabIndex = 1
+        Label33.Text = "Label1"
+        Label33.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label32
+        ' 
+        Label32.AutoSize = True
+        Label32.FlatStyle = FlatStyle.Flat
+        Label32.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label32.ForeColor = SystemColors.ActiveCaptionText
+        Label32.Location = New Point(334, -1)
+        Label32.Name = "Label32"
+        Label32.Size = New Size(38, 14)
+        Label32.TabIndex = 1
+        Label32.Text = "Label1"
+        Label32.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label31
+        ' 
+        Label31.AutoSize = True
+        Label31.FlatStyle = FlatStyle.Flat
+        Label31.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label31.ForeColor = SystemColors.ActiveCaptionText
+        Label31.Location = New Point(120, 0)
+        Label31.Name = "Label31"
+        Label31.Size = New Size(38, 14)
+        Label31.TabIndex = 1
+        Label31.Text = "Label1"
+        Label31.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label30
+        ' 
+        Label30.AutoSize = True
+        Label30.FlatStyle = FlatStyle.Flat
+        Label30.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
+        Label30.ForeColor = SystemColors.ActiveCaptionText
+        Label30.Location = New Point(228, 0)
+        Label30.Name = "Label30"
+        Label30.Size = New Size(38, 14)
+        Label30.TabIndex = 1
+        Label30.Text = "Label1"
+        Label30.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Label10
         ' 
@@ -852,7 +959,7 @@ Partial Class Form1
         Label10.FlatStyle = FlatStyle.Flat
         Label10.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label10.ForeColor = SystemColors.ActiveCaptionText
-        Label10.Location = New Point(136, 63)
+        Label10.Location = New Point(19, 0)
         Label10.Name = "Label10"
         Label10.Size = New Size(38, 14)
         Label10.TabIndex = 1
@@ -865,7 +972,7 @@ Partial Class Form1
         Label9.FlatStyle = FlatStyle.Flat
         Label9.Font = New Font("Bahnschrift Light SemiCondensed", 9.0F)
         Label9.ForeColor = SystemColors.ActiveCaptionText
-        Label9.Location = New Point(33, 63)
+        Label9.Location = New Point(13, 98)
         Label9.Name = "Label9"
         Label9.Size = New Size(38, 14)
         Label9.TabIndex = 1
@@ -888,7 +995,7 @@ Partial Class Form1
         ' 
         cboMidiInDevices.Font = New Font("Bahnschrift Light SemiCondensed", 10.0F)
         cboMidiInDevices.FormattingEnabled = True
-        cboMidiInDevices.Location = New Point(693, 133)
+        cboMidiInDevices.Location = New Point(621, 92)
         cboMidiInDevices.Name = "cboMidiInDevices"
         cboMidiInDevices.Size = New Size(159, 24)
         cboMidiInDevices.TabIndex = 4
@@ -900,11 +1007,11 @@ Partial Class Form1
         Label26.BorderStyle = BorderStyle.FixedSingle
         Label26.Font = New Font("Bahnschrift Light SemiCondensed", 12.0F)
         Label26.ForeColor = SystemColors.ButtonHighlight
-        Label26.Location = New Point(693, 109)
+        Label26.Location = New Point(615, 54)
         Label26.Name = "Label26"
-        Label26.Size = New Size(87, 21)
+        Label26.Size = New Size(71, 21)
         Label26.TabIndex = 5
-        Label26.Text = "MIDI Device:"
+        Label26.Text = "Controler:"
         ' 
         ' Label27
         ' 
@@ -913,7 +1020,7 @@ Partial Class Form1
         Label27.BorderStyle = BorderStyle.FixedSingle
         Label27.Font = New Font("Bahnschrift Light SemiCondensed", 20.0F)
         Label27.ForeColor = SystemColors.ButtonHighlight
-        Label27.Location = New Point(708, 9)
+        Label27.Location = New Point(716, 4)
         Label27.Name = "Label27"
         Label27.Size = New Size(144, 35)
         Label27.TabIndex = 5
@@ -956,7 +1063,7 @@ Partial Class Form1
         ' 
         cboMidiOutDevices.Font = New Font("Bahnschrift Light SemiCondensed", 10.0F)
         cboMidiOutDevices.FormattingEnabled = True
-        cboMidiOutDevices.Location = New Point(693, 157)
+        cboMidiOutDevices.Location = New Point(621, 130)
         cboMidiOutDevices.Name = "cboMidiOutDevices"
         cboMidiOutDevices.Size = New Size(159, 24)
         cboMidiOutDevices.TabIndex = 4
@@ -968,7 +1075,7 @@ Partial Class Form1
         Label28.BorderStyle = BorderStyle.FixedSingle
         Label28.Font = New Font("Bahnschrift Light SemiCondensed", 12.0F)
         Label28.ForeColor = SystemColors.ButtonHighlight
-        Label28.Location = New Point(619, 133)
+        Label28.Location = New Point(788, 95)
         Label28.Name = "Label28"
         Label28.Size = New Size(56, 21)
         Label28.TabIndex = 5
@@ -981,7 +1088,7 @@ Partial Class Form1
         Label29.BorderStyle = BorderStyle.FixedSingle
         Label29.Font = New Font("Bahnschrift Light SemiCondensed", 12.0F)
         Label29.ForeColor = SystemColors.ButtonHighlight
-        Label29.Location = New Point(619, 160)
+        Label29.Location = New Point(788, 133)
         Label29.Name = "Label29"
         Label29.Size = New Size(68, 21)
         Label29.TabIndex = 5
@@ -1026,12 +1133,22 @@ Partial Class Form1
         rtbMidiLog.TabIndex = 8
         rtbMidiLog.Text = ""
         ' 
+        ' Panel3
+        ' 
+        Panel3.BackColor = Color.Gray
+        Panel3.Location = New Point(5, 604)
+        Panel3.Name = "Panel3"
+        Panel3.Size = New Size(855, 153)
+        Panel3.TabIndex = 9
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = SystemColors.ControlDarkDark
-        ClientSize = New Size(864, 548)
+        ClientSize = New Size(864, 782)
+        Controls.Add(Panel1)
+        Controls.Add(Panel3)
         Controls.Add(rtbMidiLog)
         Controls.Add(lbxMidiAddresses)
         Controls.Add(BtnDisconnect)
@@ -1044,7 +1161,6 @@ Partial Class Form1
         Controls.Add(cboMidiOutDevices)
         Controls.Add(cboMidiInDevices)
         Controls.Add(Panel2)
-        Controls.Add(Panel1)
         Name = "Form1"
         Text = "Form1"
         Panel1.ResumeLayout(False)
@@ -1133,5 +1249,13 @@ Partial Class Form1
     Friend WithEvents rtbMidiLog As RichTextBox
     Friend WithEvents cmsMidiLearn As ContextMenuStrip
     Friend WithEvents tsmiLearnMidi As ToolStripMenuItem
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents Label36 As Label
+    Friend WithEvents Label35 As Label
+    Friend WithEvents Label34 As Label
+    Friend WithEvents Label33 As Label
+    Friend WithEvents Label32 As Label
+    Friend WithEvents Label31 As Label
+    Friend WithEvents Label30 As Label
 
 End Class
